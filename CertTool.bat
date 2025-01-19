@@ -148,7 +148,7 @@ echo                          David Miller Certificate Tool
 echo           %lineLong%
 echo.
 if %installIntermediateCA%==true (
-	echo                Validating integrity of 14 files...
+	echo                Validating integrity of 15 files...
 ) else (
 	echo                Validating integrity of 5 files...
 )
@@ -187,13 +187,16 @@ if %installIntermediateCA%==true (
 	if not exist "%~dp0intermediate\ExternalCAG5SHA384.crt" (
 		goto installationCheckFailed
 	)
+	if not exist "%~dp0intermediate\InternalPCAG7SHA384.crt" (
+		goto installationCheckFailed
+	)
 	if not exist "%~dp0intermediate\OVServerCAG7SHA256.crt" (
 		goto installationCheckFailed
 	)
 	if not exist "%~dp0intermediate\SecureEmailCAG6SHA256.crt" (
 		goto installationCheckFailed
 	)
-	if not exist "%~dp0intermediate\TimestampingCAG9SHA256.crt" (
+	if not exist "%~dp0intermediate\TimestampingCAG11SHA256.crt" (
 		goto installationCheckFailed
 	)
 )
@@ -209,9 +212,10 @@ if %installIntermediateCA%==true (
 	"%Windir%\System32\certutil.exe" -hashfile "%~dp0intermediate\DVServerCAG5SHA256.crt" SHA256 > "%~dp0temp\DVServerCAG5SHA256.crt.sha256"
 	"%Windir%\System32\certutil.exe" -hashfile "%~dp0intermediate\EVServerCAG5SHA256.crt" SHA256 > "%~dp0temp\EVServerCAG5SHA256.crt.sha256"
 	"%Windir%\System32\certutil.exe" -hashfile "%~dp0intermediate\ExternalCAG5SHA384.crt" SHA256 > "%~dp0temp\ExternalCAG5SHA384.crt.sha256"
+	"%Windir%\System32\certutil.exe" -hashfile "%~dp0intermediate\InternalPCAG7SHA384.crt" SHA256 > "%~dp0temp\InternalPCAG7SHA384.crt.sha256"
 	"%Windir%\System32\certutil.exe" -hashfile "%~dp0intermediate\OVServerCAG7SHA256.crt" SHA256 > "%~dp0temp\OVServerCAG7SHA256.crt.sha256"
 	"%Windir%\System32\certutil.exe" -hashfile "%~dp0intermediate\SecureEmailCAG6SHA256.crt" SHA256 > "%~dp0temp\SecureEmailCAG6SHA256.crt.sha256"
-	"%Windir%\System32\certutil.exe" -hashfile "%~dp0intermediate\TimestampingCAG9SHA256.crt" SHA256 > "%~dp0temp\TimestampingCAG9SHA256.crt.sha256"
+	"%Windir%\System32\certutil.exe" -hashfile "%~dp0intermediate\TimestampingCAG11SHA256.crt" SHA256 > "%~dp0temp\TimestampingCAG11SHA256.crt.sha256"
 )
 findstr 5ea2fa33b16f1f12f27653749849a25712b37269ac54ac175374b6e2c687e912 "%~dp0temp\R4_R1RootCA.crt.sha256" >nul 2>nul || goto installationCheckFailed
 findstr 6d3917edc8f739c898e244ebb3b7c17c5abd06cb4b597165583656cb1624cbd8 "%~dp0temp\R4_R2RootCA.crt.sha256" >nul 2>nul || goto installationCheckFailed
@@ -225,12 +229,13 @@ if %installIntermediateCA%==true (
 	findstr f5d4fb98d00068a8105c81f0e9a767c8d7de847366bb7f01fba6b045db73ef96 "%~dp0temp\DVServerCAG5SHA256.crt.sha256"  >nul 2>nul || goto installationCheckFailed
 	findstr 088cb36f4d92f25bf4c84b9b3b62c9733edcdc1c66133d8467d769ce543dfea9 "%~dp0temp\EVServerCAG5SHA256.crt.sha256" >nul 2>nul || goto installationCheckFailed
 	findstr c212796bd80b0fe9f04de7c67de53eeda50471211b03f32ca6708e047e7af1a2 "%~dp0temp\ExternalCAG5SHA384.crt.sha256" >nul 2>nul || goto installationCheckFailed
+	findstr 827b4264775d053a9940c9c7c3e342d79bd5fdcdd75b47931a1f1e0daa5ed22d "%~dp0temp\InternalPCAG7SHA384.crt.sha256" >nul 2>nul || goto installationCheckFailed
 	findstr b829595d993f0ccbb5492e19b15d18c39caaed8e6391505ba0988da18f81b258 "%~dp0temp\OVServerCAG7SHA256.crt.sha256" >nul 2>nul || goto installationCheckFailed
 	findstr ec853968883fd0e6a628e40548dffde5898ca58ddb262a81e03d5ba50fbae59a "%~dp0temp\SecureEmailCAG6SHA256.crt.sha256" >nul 2>nul || goto installationCheckFailed
-	findstr 43a8ae70618ecbfa055dac8b0502a767a07c57937dae69187a1aec21dfb3f6d3 "%~dp0temp\TimestampingCAG9SHA256.crt.sha256" >nul 2>nul || goto installationCheckFailed
+	findstr f60e1e65c1d46089fb9fc3d48ef87b7384eece3fa698b732968861070e1e5da9 "%~dp0temp\TimestampingCAG11SHA256.crt.sha256" >nul 2>nul || goto installationCheckFailed
 )
 if %installIntermediateCA%==true (
-	echo                All 14 files successfully validated!
+	echo                All 15 files successfully validated!
 ) else (
 	echo                All 5 files successfully validated!
 )
@@ -285,6 +290,10 @@ if %installIntermediateCA%==true (
 	"%Windir%\System32\certutil.exe" -addstore CA "%~dp0intermediate\ExternalCAG5SHA384.crt" >nul 2>nul
 	reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\2E024FED995F43C48461F8547B55A4CE8E586CF6" >nul 2>nul || set installationFailed=true
 	echo.
+	echo                Installing Internal PCA - G7 - SHA384...
+	"%Windir%\System32\certutil.exe" -addstore CA "%~dp0intermediate\InternalPCAG7SHA384.crt" >nul 2>nul
+	reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\06EC516FB31E2BE344EDDFEA2214E059305E3DA4" >nul 2>nul || set installationFailed=true
+	echo.
 	echo                Installing OV Server CA - G7 - SHA256...
 	"%Windir%\System32\certutil.exe" -addstore CA "%~dp0intermediate\OVServerCAG7SHA256.crt" >nul 2>nul
 	reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\1EE840F63FF22F2A7F324908C0C6763FDD0FABB0" >nul 2>nul || set installationFailed=true
@@ -293,9 +302,9 @@ if %installIntermediateCA%==true (
 	"%Windir%\System32\certutil.exe" -addstore CA "%~dp0intermediate\SecureEmailCAG6SHA256.crt" >nul 2>nul
 	reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\362C650E81F6094EF9AB21131FC05C09480D86F1" >nul 2>nul || set installationFailed=true
 	echo.
-	echo                Installing Timestamping CA - G9 - SHA256...
-	"%Windir%\System32\certutil.exe" -addstore CA "%~dp0intermediate\TimestampingCAG9SHA256.crt" >nul 2>nul
-	reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\D508B119C14C83B185A5F7D83309BD4C2874D403" >nul 2>nul || set installationFailed=true
+	echo                Installing Timestamping CA - G11 - SHA256...
+	"%Windir%\System32\certutil.exe" -addstore CA "%~dp0intermediate\TimestampingCAG11SHA256.crt" >nul 2>nul
+	reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\04CEEF784BB10EDF59C71A143AF57CD321FC359D" >nul 2>nul || set installationFailed=true
 )
 if defined installationFailed (
 	set result=fail
@@ -844,7 +853,7 @@ reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\84F765BDD
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\84F765BDD8E712068B296FB09594EA0AAF116E98" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\84F765BDD8E712068B296FB09594EA0AAF116E98" >nul 2>nul && set uninstallationFailed=true
 echo.
-echo                Removing Code Signing CA - G4...
+echo                Removing Code Signing CA - G4 - SHA384...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\A82DACBCC453E4CE514D597BE8CE394AB82D879F" /f >nul 2>nul
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\A82DACBCC453E4CE514D597BE8CE394AB82D879F" /f >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\A82DACBCC453E4CE514D597BE8CE394AB82D879F" >nul 2>nul && set uninstallationFailed=true
@@ -928,6 +937,12 @@ reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\170BA85AA
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\170BA85AA19E7FF5CBD89117E54AEAB93AAB7B2C" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\170BA85AA19E7FF5CBD89117E54AEAB93AAB7B2C" >nul 2>nul && set uninstallationFailed=true
 echo.
+echo                Removing Internal PCA - G7 - SHA384...
+reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\06EC516FB31E2BE344EDDFEA2214E059305E3DA4" /f >nul 2>nul
+reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\06EC516FB31E2BE344EDDFEA2214E059305E3DA4" /f >nul 2>nul
+reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\06EC516FB31E2BE344EDDFEA2214E059305E3DA4" >nul 2>nul && set uninstallationFailed=true
+reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\06EC516FB31E2BE344EDDFEA2214E059305E3DA4" >nul 2>nul && set uninstallationFailed=true
+echo.
 echo                Removing Internal Server PCA - G2 - SHA256...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\8809FB1EC9278061EBFCFBE6A29E95B7E559F1C5" /f >nul 2>nul
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\8809FB1EC9278061EBFCFBE6A29E95B7E559F1C5" /f >nul 2>nul
@@ -939,6 +954,12 @@ reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\98235A36E
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\98235A36EE95E971CEE14463057CCA39DE4AD31A" /f >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\98235A36EE95E971CEE14463057CCA39DE4AD31A" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\98235A36EE95E971CEE14463057CCA39DE4AD31A" >nul 2>nul && set uninstallationFailed=true
+echo.
+echo                Removing Internal Server PCA - G4 - SHA256...
+reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\090AD4BF522D71F32A88F314EFD30B34012FF852" /f >nul 2>nul
+reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\090AD4BF522D71F32A88F314EFD30B34012FF852" /f >nul 2>nul
+reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\090AD4BF522D71F32A88F314EFD30B34012FF852" >nul 2>nul && set uninstallationFailed=true
+reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\090AD4BF522D71F32A88F314EFD30B34012FF852" >nul 2>nul && set uninstallationFailed=true
 echo.
 echo                Removing OV Server CA - G5 - SHA256...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\BDC027633F1893336C718B1E72738D25CB690704" /f >nul 2>nul
@@ -988,11 +1009,17 @@ reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\6784D4AC1
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\6784D4AC177E0BD6D69E53A7FF608F55AC7C3D3A" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\6784D4AC177E0BD6D69E53A7FF608F55AC7C3D3A" >nul 2>nul && set uninstallationFailed=true
 echo.
-echo                Removing Timestamping CA - G8 - SHA256...
+echo                Removing Timestamping CA - G9 - SHA256...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\D508B119C14C83B185A5F7D83309BD4C2874D403" /f >nul 2>nul
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\D508B119C14C83B185A5F7D83309BD4C2874D403" /f >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\D508B119C14C83B185A5F7D83309BD4C2874D403" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\D508B119C14C83B185A5F7D83309BD4C2874D403" >nul 2>nul && set uninstallationFailed=true
+echo.
+echo                Removing Timestamping CA - G11 - SHA256...
+reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\04CEEF784BB10EDF59C71A143AF57CD321FC359D" /f >nul 2>nul
+reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\04CEEF784BB10EDF59C71A143AF57CD321FC359D" /f >nul 2>nul
+reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\04CEEF784BB10EDF59C71A143AF57CD321FC359D" >nul 2>nul && set uninstallationFailed=true
+reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\04CEEF784BB10EDF59C71A143AF57CD321FC359D" >nul 2>nul && set uninstallationFailed=true
 echo.
 echo                Removing Global Services CA1 - G2...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\0A68740725EFAE8E1553503C0ACE56E4CB638C35" /f >nul 2>nul
@@ -1590,7 +1617,7 @@ echo                Author: David Miller Trust Services Team
 echo.
 echo                Website: https://www.dmpki.com
 echo.
-echo                Version: 2.14 ^(Release^)
+echo                Version: 2.15 ^(Release^)
 if defined about (
 	setlocal EnableDelayedExpansion
 	set result=
