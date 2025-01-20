@@ -10,7 +10,7 @@ for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1)
 setlocal DisableDelayedExpansion
 md temp >nul 2>nul
 set lineShort=__________________________________________________
-set lineLong=____________________________________________________________
+set lineLong=_____________________________________________________________
 set echoName=true
 goto precheck
 
@@ -28,7 +28,7 @@ if %echoName%==true (
 	echo.
 	echo.
 	echo.
-	echo                          David Miller Certificate Tool
+	echo                           David Miller Certificate Tool
 	set echoName=false
 )
 echo           %lineLong%
@@ -87,7 +87,7 @@ if %echoName%==true (
 	echo.
 	echo.
 	echo.
-	echo                          David Miller Certificate Tool
+	echo                           David Miller Certificate Tool
 	set echoName=false
 )
 echo           %lineLong%
@@ -144,7 +144,7 @@ goto invalidOption
 :installationPrecheck
 cls
 echo.
-echo                          David Miller Certificate Tool
+echo                           David Miller Certificate Tool
 echo           %lineLong%
 echo.
 if %installIntermediateCA%==true (
@@ -316,7 +316,7 @@ goto credits
 :uninstallation
 cls
 echo.
-echo                          David Miller Certificate Tool
+echo                           David Miller Certificate Tool
 echo           %lineLong%
 echo.
 echo                Removing Root CA - R1...
@@ -1185,7 +1185,7 @@ goto credits
 cls
 reg query "HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Control\Nls\Language" /v InstallLanguage | find "0804" >nul 2>nul && set country=CN || set country=RoW
 echo.
-echo                          David Miller Certificate Tool
+echo                           David Miller Certificate Tool
 echo           %lineLong%
 echo.
 echo                         Starting your default browser...
@@ -1341,7 +1341,7 @@ goto choice
 :testInstallationPrecheck
 cls
 echo.
-echo                          David Miller Certificate Tool
+echo                           David Miller Certificate Tool
 echo           %lineLong%
 echo.
 echo                Validating integrity of 3 files...
@@ -1388,7 +1388,7 @@ goto credits
 :testUninstallation
 cls
 echo.
-echo                          David Miller Certificate Tool
+echo                           David Miller Certificate Tool
 echo           %lineLong%
 echo.
 echo                Removing Test Root CA - T1...
@@ -1456,7 +1456,7 @@ cls
 echo.
 echo.
 echo.
-echo                          David Miller Certificate Tool
+echo                           David Miller Certificate Tool
 echo           %lineLong%
 echo.
 call :color 0C "                    Your choice is invalid. Please try again"
@@ -1485,7 +1485,7 @@ cls
 echo.
 echo.
 echo.
-echo                          David Miller Certificate Tool
+echo                           David Miller Certificate Tool
 echo           %lineLong%
 goto precheckFailedChoice
 
@@ -1525,7 +1525,7 @@ cls
 echo.
 echo.
 echo.
-echo                          David Miller Certificate Tool
+echo                           David Miller Certificate Tool
 echo           %lineLong%
 echo.
 call :color 0C "                      Some files are missing or corrupted!"
@@ -1557,7 +1557,7 @@ if %installationCheckFailedOption%==2 (
 	set installationCheckFailedOption=
 	cls
 	echo.
-	echo                          David Miller Certificate Tool
+	echo                           David Miller Certificate Tool
 	echo           %lineLong%
 	echo.
 	if %installationMode%==production (
@@ -1586,7 +1586,7 @@ if defined about (
 	echo.
 	echo.
 	echo.
-	echo                          David Miller Certificate Tool
+	echo                           David Miller Certificate Tool
 	echo           %lineLong%
 	echo.
 	echo                CertTool provides the easiest and the safest way
@@ -1622,6 +1622,8 @@ echo.
 echo                Website: https://www.dmpki.com
 echo.
 echo                Version: 2.16 ^(Release^)
+echo.
+echo                © 2025 David Miller Trust Services. All rights reserved.
 if defined about (
 	setlocal EnableDelayedExpansion
 	set result=
@@ -1664,7 +1666,7 @@ if defined about (
 )
 
 :loopChoice
-echo                %lineShort%
+echo           %lineLong%
 echo.
 echo                [1] Return to main menu
 echo.
