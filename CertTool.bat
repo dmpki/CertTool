@@ -230,7 +230,7 @@ if %installIntermediateCA%==true (
 	findstr 088cb36f4d92f25bf4c84b9b3b62c9733edcdc1c66133d8467d769ce543dfea9 "%~dp0temp\EVServerCAG5SHA256.crt.sha256" >nul 2>nul || goto installationCheckFailed
 	findstr c212796bd80b0fe9f04de7c67de53eeda50471211b03f32ca6708e047e7af1a2 "%~dp0temp\ExternalCAG5SHA384.crt.sha256" >nul 2>nul || goto installationCheckFailed
 	findstr 827b4264775d053a9940c9c7c3e342d79bd5fdcdd75b47931a1f1e0daa5ed22d "%~dp0temp\InternalPCAG7SHA384.crt.sha256" >nul 2>nul || goto installationCheckFailed
-	findstr b829595d993f0ccbb5492e19b15d18c39caaed8e6391505ba0988da18f81b258 "%~dp0temp\OVServerCAG7SHA256.crt.sha256" >nul 2>nul || goto installationCheckFailed
+	findstr 23bd7f7468805a6d39359f7e78bd0ac8e35ac3712e5563ba5c83d34047a54858 "%~dp0temp\OVServerCAG7SHA256.crt.sha256" >nul 2>nul || goto installationCheckFailed
 	findstr ec853968883fd0e6a628e40548dffde5898ca58ddb262a81e03d5ba50fbae59a "%~dp0temp\SecureEmailCAG6SHA256.crt.sha256" >nul 2>nul || goto installationCheckFailed
 	findstr f60e1e65c1d46089fb9fc3d48ef87b7384eece3fa698b732968861070e1e5da9 "%~dp0temp\TimestampingCAG11SHA256.crt.sha256" >nul 2>nul || goto installationCheckFailed
 )
@@ -244,15 +244,15 @@ echo.
 goto installation
 
 :installation
-echo                Installing Root CA - R1 ^(R4, v2^)...
+echo                Installing Root CA - R1 ^(R4, G2^)...
 "%Windir%\System32\certutil.exe" -addstore CA "%~dp0cross-sign\R4_R1RootCA.crt" >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\1AEFDB703481A930A11640F49F148F4F1A1FF1B0" >nul 2>nul || set installationFailed=true
 echo.
-echo                Installing Root CA - R2 ^(R4, v2^)...
+echo                Installing Root CA - R2 ^(R4, G2^)...
 "%Windir%\System32\certutil.exe" -addstore CA "%~dp0cross-sign\R4_R2RootCA.crt" >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\C0023A4E5FC374DCA1CD4A3472D927EE2EE7D08B" >nul 2>nul || set installationFailed=true
 echo.
-echo                Installing Root CA - R3 ^(R4, v2^)...
+echo                Installing Root CA - R3 ^(R4, G2^)...
 "%Windir%\System32\certutil.exe" -addstore CA "%~dp0cross-sign\R4_R3RootCA.crt" >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\FBF708076234EAE6E9030E939CD886FF3E32CC24" >nul 2>nul || set installationFailed=true
 echo.
@@ -260,7 +260,7 @@ echo                Installing Root CA - R4...
 regedit.exe /s "%~dp0root\R4RootCA.reg" >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\ROOT\Certificates\227A08FD5D7641A2B2D2AB1A4DE00C8AF665BD50" >nul 2>nul || set installationFailed=true
 echo.
-echo                Installing Root Certificate Authority ^(R4, v2^)...
+echo                Installing Root Certificate Authority ^(R4, G2^)...
 "%Windir%\System32\certutil.exe" -addstore CA "%~dp0cross-sign\R4_RootCertificateAuthority.crt" >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\3E3C4A3E26FF24BA8DFFAD98257471CBFEC4057F" >nul 2>nul || set installationFailed=true
 if %installIntermediateCA%==true (
@@ -296,7 +296,7 @@ if %installIntermediateCA%==true (
 	echo.
 	echo                Installing OV Server CA - G7 - SHA256...
 	"%Windir%\System32\certutil.exe" -addstore CA "%~dp0intermediate\OVServerCAG7SHA256.crt" >nul 2>nul
-	reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\1EE840F63FF22F2A7F324908C0C6763FDD0FABB0" >nul 2>nul || set installationFailed=true
+	reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\AE3BABC8378C3395344B9356060E30E8E05AE5F0" >nul 2>nul || set installationFailed=true
 	echo.
 	echo                Installing Secure Email CA - G6 - SHA256...
 	"%Windir%\System32\certutil.exe" -addstore CA "%~dp0intermediate\SecureEmailCAG6SHA256.crt" >nul 2>nul
@@ -325,13 +325,13 @@ reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\ROOT\Certificates\73298F6
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\ROOT\Certificates\73298F6468D150007B2EFFFABAAF1956401D0283" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\ROOT\Certificates\73298F6468D150007B2EFFFABAAF1956401D0283" >nul 2>nul && set uninstallationFailed=true
 echo.
-echo                Removing Root CA - R1 ^(R4, v1^)...
+echo                Removing Root CA - R1 ^(R4, G1^)...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\B569242CF35783FAFEF62AFB9989DBE1175F3A62" /f >nul 2>nul
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\B569242CF35783FAFEF62AFB9989DBE1175F3A62" /f >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\B569242CF35783FAFEF62AFB9989DBE1175F3A62" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\B569242CF35783FAFEF62AFB9989DBE1175F3A62" >nul 2>nul && set uninstallationFailed=true
 echo.
-echo                Removing Root CA - R1 ^(R4, v2^)...
+echo                Removing Root CA - R1 ^(R4, G2^)...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\1AEFDB703481A930A11640F49F148F4F1A1FF1B0" /f >nul 2>nul
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\1AEFDB703481A930A11640F49F148F4F1A1FF1B0" /f >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\1AEFDB703481A930A11640F49F148F4F1A1FF1B0" >nul 2>nul && set uninstallationFailed=true
@@ -343,13 +343,13 @@ reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\ROOT\Certificates\4A24E7F
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\ROOT\Certificates\4A24E7FC6C80EA54BEF5883DD83248F9A1509362" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\ROOT\Certificates\4A24E7FC6C80EA54BEF5883DD83248F9A1509362" >nul 2>nul && set uninstallationFailed=true
 echo.
-echo                Removing Root CA - R2 ^(R4, v1^)...
+echo                Removing Root CA - R2 ^(R4, G1^)...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\852BE1231EF1C9AC3865E69D69843BC1E4818801" /f >nul 2>nul
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\852BE1231EF1C9AC3865E69D69843BC1E4818801" /f >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\852BE1231EF1C9AC3865E69D69843BC1E4818801" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\852BE1231EF1C9AC3865E69D69843BC1E4818801" >nul 2>nul && set uninstallationFailed=true
 echo.
-echo                Removing Root CA - R2 ^(R4, v2^)...
+echo                Removing Root CA - R2 ^(R4, G2^)...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\C0023A4E5FC374DCA1CD4A3472D927EE2EE7D08B" /f >nul 2>nul
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\C0023A4E5FC374DCA1CD4A3472D927EE2EE7D08B" /f >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\C0023A4E5FC374DCA1CD4A3472D927EE2EE7D08B" >nul 2>nul && set uninstallationFailed=true
@@ -367,13 +367,13 @@ reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\903174AC7
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\903174AC770839306CE043B6A4EA6FD74AD262C0" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\903174AC770839306CE043B6A4EA6FD74AD262C0" >nul 2>nul && set uninstallationFailed=true
 echo.
-echo                Removing Root CA - R3 ^(R4, v1^)...
+echo                Removing Root CA - R3 ^(R4, G1^)...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\03CBB967495A68DA5B180DCB728810A77C6E1BA9" /f >nul 2>nul
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\03CBB967495A68DA5B180DCB728810A77C6E1BA9" /f >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\03CBB967495A68DA5B180DCB728810A77C6E1BA9" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\03CBB967495A68DA5B180DCB728810A77C6E1BA9" >nul 2>nul && set uninstallationFailed=true
 echo.
-echo                Removing Root CA - R3 ^(R4, v2^)...
+echo                Removing Root CA - R3 ^(R4, G2^)...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\FBF708076234EAE6E9030E939CD886FF3E32CC24" /f >nul 2>nul
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\FBF708076234EAE6E9030E939CD886FF3E32CC24" /f >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\FBF708076234EAE6E9030E939CD886FF3E32CC24" >nul 2>nul && set uninstallationFailed=true
@@ -385,37 +385,37 @@ reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\ROOT\Certificates\227A08F
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\ROOT\Certificates\227A08FD5D7641A2B2D2AB1A4DE00C8AF665BD50" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\ROOT\Certificates\227A08FD5D7641A2B2D2AB1A4DE00C8AF665BD50" >nul 2>nul && set uninstallationFailed=true
 echo.
-echo                Removing Root CA - R4 ^(R1, v1^)...
+echo                Removing Root CA - R4 ^(R1, G1^)...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\552918E3B7F913232AA7FC07D531F5D03EA113E3" /f >nul 2>nul
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\552918E3B7F913232AA7FC07D531F5D03EA113E3" /f >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\552918E3B7F913232AA7FC07D531F5D03EA113E3" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\552918E3B7F913232AA7FC07D531F5D03EA113E3" >nul 2>nul && set uninstallationFailed=true
 echo.
-echo                Removing Root CA - R4 ^(R1, v2^)...
+echo                Removing Root CA - R4 ^(R1, G2^)...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\EB4A462270C823C28615BC559CF83EED525BA2BA" /f >nul 2>nul
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\EB4A462270C823C28615BC559CF83EED525BA2BA" /f >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\EB4A462270C823C28615BC559CF83EED525BA2BA" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\EB4A462270C823C28615BC559CF83EED525BA2BA" >nul 2>nul && set uninstallationFailed=true
 echo.
-echo                Removing Root CA - R4 ^(R2, v1^)...
+echo                Removing Root CA - R4 ^(R2, G1^)...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\917E60F37D4C95B1DD26A3BD0CCF690EA220D249" /f >nul 2>nul
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\917E60F37D4C95B1DD26A3BD0CCF690EA220D249" /f >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\917E60F37D4C95B1DD26A3BD0CCF690EA220D249" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\917E60F37D4C95B1DD26A3BD0CCF690EA220D249" >nul 2>nul && set uninstallationFailed=true
 echo.
-echo                Removing Root CA - R4 ^(R2, v2^)...
+echo                Removing Root CA - R4 ^(R2, G2^)...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\40FBAB3466D71CFB0AB0410CCF31D9BFF88210F0" /f >nul 2>nul
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\40FBAB3466D71CFB0AB0410CCF31D9BFF88210F0" /f >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\40FBAB3466D71CFB0AB0410CCF31D9BFF88210F0" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\40FBAB3466D71CFB0AB0410CCF31D9BFF88210F0" >nul 2>nul && set uninstallationFailed=true
 echo.
-echo                Removing Root CA - R4 ^(R3, v1^)...
+echo                Removing Root CA - R4 ^(R3, G1^)...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\B5B3AC85DF129E6D2355384A7808C2CF71558929" /f >nul 2>nul
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\B5B3AC85DF129E6D2355384A7808C2CF71558929" /f >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\B5B3AC85DF129E6D2355384A7808C2CF71558929" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\B5B3AC85DF129E6D2355384A7808C2CF71558929" >nul 2>nul && set uninstallationFailed=true
 echo.
-echo                Removing Root CA - R4 ^(R3, v2^)...
+echo                Removing Root CA - R4 ^(R3, G2^)...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\1CDFC709BF119D9490557BD80644A37D493240F9" /f >nul 2>nul
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\1CDFC709BF119D9490557BD80644A37D493240F9" /f >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\1CDFC709BF119D9490557BD80644A37D493240F9" >nul 2>nul && set uninstallationFailed=true
@@ -433,13 +433,13 @@ reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\88398923B
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\88398923B5F33CB231DB9DAD711A137C1B8563A1" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\88398923B5F33CB231DB9DAD711A137C1B8563A1" >nul 2>nul && set uninstallationFailed=true
 echo.
-echo                Removing Root Certificate Authority ^(R4, v1^)...
+echo                Removing Root Certificate Authority ^(R4, G1^)...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\2A68652C2C14CD0A7404E58C72085726602D36EE" /f >nul 2>nul
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\2A68652C2C14CD0A7404E58C72085726602D36EE" /f >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\2A68652C2C14CD0A7404E58C72085726602D36EE" >nul 2>nul && set uninstallationFailed=true
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\2A68652C2C14CD0A7404E58C72085726602D36EE" >nul 2>nul && set uninstallationFailed=true
 echo.
-echo                Removing Root Certificate Authority ^(R4, v2^)...
+echo                Removing Root Certificate Authority ^(R4, G2^)...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\3E3C4A3E26FF24BA8DFFAD98257471CBFEC4057F" /f >nul 2>nul
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\3E3C4A3E26FF24BA8DFFAD98257471CBFEC4057F" /f >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\3E3C4A3E26FF24BA8DFFAD98257471CBFEC4057F" >nul 2>nul && set uninstallationFailed=true
@@ -974,10 +974,10 @@ reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\774B37BFD0
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\774B37BFD0CDDFAF8B179809BBADE5BA392B3ADF" >nul 2>nul && set uninstallationFailed=true
 echo.
 echo                Removing OV Server CA - G7 - SHA256...
-reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\1EE840F63FF22F2A7F324908C0C6763FDD0FABB0" /f >nul 2>nul
-reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\1EE840F63FF22F2A7F324908C0C6763FDD0FABB0" /f >nul 2>nul
-reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\1EE840F63FF22F2A7F324908C0C6763FDD0FABB0" >nul 2>nul && set uninstallationFailed=true
-reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\1EE840F63FF22F2A7F324908C0C6763FDD0FABB0" >nul 2>nul && set uninstallationFailed=true
+reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\AE3BABC8378C3395344B9356060E30E8E05AE5F0" /f >nul 2>nul
+reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\AE3BABC8378C3395344B9356060E30E8E05AE5F0" /f >nul 2>nul
+reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\AE3BABC8378C3395344B9356060E30E8E05AE5F0" >nul 2>nul && set uninstallationFailed=true
+reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\AE3BABC8378C3395344B9356060E30E8E05AE5F0" >nul 2>nul && set uninstallationFailed=true
 echo.
 echo                Removing Secure Email CA - G5 - SHA256...
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\1221503CA1E1011B8EB539B15702F3BDBD016CF8" /f >nul 2>nul
@@ -1130,6 +1130,10 @@ reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\9F5D296F72
 reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\9F5D296F72A7E6E2ADBE775CF30F2D3823614457" >nul 2>nul && set uninstallationFailed=true
 echo.
 echo                Removing other certificates...
+reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\1EE840F63FF22F2A7F324908C0C6763FDD0FABB0" /f >nul 2>nul
+reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\1EE840F63FF22F2A7F324908C0C6763FDD0FABB0" /f >nul 2>nul
+reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\1EE840F63FF22F2A7F324908C0C6763FDD0FABB0" >nul 2>nul && set uninstallationFailed=true
+reg query "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\1EE840F63FF22F2A7F324908C0C6763FDD0FABB0" >nul 2>nul && set uninstallationFailed=true
 reg delete "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\6F739F4233ACACFB0A564068CD09CAB6280881C6" /f >nul 2>nul
 reg delete "HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\6F739F4233ACACFB0A564068CD09CAB6280881C6" /f >nul 2>nul
 reg query "HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\6F739F4233ACACFB0A564068CD09CAB6280881C6" >nul 2>nul && set uninstallationFailed=true
@@ -1617,7 +1621,7 @@ echo                Author: David Miller Trust Services Team
 echo.
 echo                Website: https://www.dmpki.com
 echo.
-echo                Version: 2.15 ^(Release^)
+echo                Version: 2.16 ^(Release^)
 if defined about (
 	setlocal EnableDelayedExpansion
 	set result=
