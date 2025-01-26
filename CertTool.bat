@@ -1183,122 +1183,41 @@ goto credits
 
 :openURL
 cls
-reg query "HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Control\Nls\Language" /v InstallLanguage | find "0804" >nul 2>nul && set country=CN || set country=RoW
 echo.
 echo                           David Miller Certificate Tool
 echo           %lineLong%
 echo.
 echo                         Starting your default browser...
 if %url%==pki (
-	if defined countryTemp (
-		start https://www2.dmpki.com
-	) else (
-		start https://www.dmpki.com
-	)
+	start https://dmpki.com
 	echo                %lineShort%
 	echo.
 	echo                If the website is not opened,
 	echo.
 	echo                please enter ^"1^" or open this URL manually:
 	echo.
-	if defined countryTemp (
-		echo                https://www2.dmpki.com
-	) else (
-		echo                https://www.dmpki.com
-	)
-	echo                %lineShort%
-	echo.
-	echo                If the website did not work as expected,
-	echo.
-	echo                please enter ^"2^" or open this URL manually:
-	echo.
-	if defined countryTemp (
-		echo                https://www.dmpki.com
-	) else (
-		echo                https://www2.dmpki.com
-	)
+	echo                https://dmpki.com
 )
 if %url%==dl (
-	if defined countryTemp (
-		if %country%==CN (
-			start https://go.dmpki.com/ct2
-		)
-		if %country%==RoW (
-			start https://go.dmpki.com/ct
-		)
-	) else (
-		if %country%==CN (
-			start https://go.dmpki.com/ct
-		)
-		if %country%==RoW (
-			start https://go.dmpki.com/ct2
-		)
-	)
+	start https://repo.dmpki.com/CertTool/CertTool.exe
 	echo                %lineShort%
 	echo.
 	echo                If the website is not opened,
 	echo.
 	echo                please enter ^"1^" or open this URL manually:
 	echo.
-	if defined countryTemp (
-		if %country%==CN (
-			echo                https://go.dmpki.com/ct2
-		)
-		if %country%==RoW (
-			echo                https://go.dmpki.com/ct
-		)
-	) else (
-		if %country%==CN (
-			echo                https://go.dmpki.com/ct
-		)
-		if %country%==RoW (
-			echo                https://go.dmpki.com/ct2
-		)
-	)
-	echo                %lineShort%
-	echo.
-	echo                If the website did not work as expected,
-	echo.
-	echo                please enter ^"2^" or open this URL manually:
-	echo.
-	if defined countryTemp (
-		if %country%==CN (
-			echo                https://go.dmpki.com/ct
-		)
-		if %country%==RoW (
-			echo                https://go.dmpki.com/ct2
-		)
-	) else (
-		if %country%==CN (
-			echo                https://go.dmpki.com/ct2
-		)
-		if %country%==RoW (
-			echo                https://go.dmpki.com/ct
-		)
-	)
+	echo                https://repo.dmpki.com/CertTool/CertTool.exe
 )
 echo           %lineLong%
 echo.
-if defined countryTemp (
-	echo                [1] Reopen alternative URL
-	echo.
-	echo                [2] Open original URL
-) else (
-	echo                [1] Reopen URL
-	echo.
-	echo                [2] Open alternative URL
-)
+echo                [1] Reopen URL
 echo.
-if defined precheckFailed (
-	echo                [3] Return to warning page
-) else (
-	echo                [3] Return to main menu
-)
+echo                [2] Return to main menu
 echo.
-echo                [4] Exit
+echo                [3] Exit
 echo           %lineLong%
 echo.
-set /p openURLOption=^>              Please input your choice and press ^"Enter^" ^(1-4^): 
+set /p openURLOption=^>              Please input your choice and press ^"Enter^" ^(1-3^): 
 if not defined openURLOption (
 	set echoName=true
 	cls
@@ -1310,30 +1229,14 @@ if %openURLOption%==1 (
 )
 if %openURLOption%==2 (
 	set openURLOption=
-	if defined countryTemp (
-		set countryTemp=
-	) else (
-		set countryTemp=true
-	)
-	goto openURL
+	set echoName=true
+	cls
+	goto choice
 )
 if %openURLOption%==3 (
-	set countryTemp=
-	if defined precheckFailed (
-		cls
-		goto precheckFailed
-	) else (
-		set openURLOption=
-		set echoName=true
-		cls
-		goto choice
-	)
-)
-if %openURLOption%==4 (
 	exit
 )
 set openURLOption=
-set countryTemp=
 set echoName=true
 cls
 goto choice
@@ -1619,9 +1522,9 @@ set uninstallationFailed=
 set installationFailed=
 echo                Author: David Miller Trust Services Team
 echo.
-echo                Website: https://www.dmpki.com
+echo                Website: https://dmpki.com
 echo.
-echo                Version: 2.16 ^(Release^)
+echo                Version: 2.17 ^(Release^)
 echo.
 echo                © 2025 David Miller Trust Services. All rights reserved.
 if defined about (
